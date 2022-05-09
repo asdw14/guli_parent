@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.commonutils.R;
+import com.dizhongdi.servicebase.exceptionhandler.GuliException;
 import com.dizhongdi.serviceedu.entity.EduTeacher;
 import com.dizhongdi.serviceedu.service.EduTeacherService;
 import com.dizhongdi.serviceedu.vo.TeacherQuery;
@@ -104,6 +105,11 @@ public class EduTeacherController {
     @GetMapping("{id}")
     @ApiOperation(value = "通过id查讲师")
     public R queryById(@PathVariable String id){
+        try {
+            int i = 10/0;
+        }catch (Exception e){
+            throw new GuliException(5000,"自定义异常");
+        }
         return R.ok().data("items",eduTeacherService.getById(id));
     }
 
