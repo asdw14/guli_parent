@@ -1,6 +1,7 @@
 package com.dizhongdi.servicebase.exceptionhandler;
 
 import com.dizhongdi.commonutils.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @Author:dizhongdi
  */
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
@@ -31,6 +33,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(GuliException.class)
     @ResponseBody
     public R error(GuliException e){
+        log.error(e.getMsg());
         e.printStackTrace();
         return R.error().message(e.getMsg()).code(e.getCode());
     }

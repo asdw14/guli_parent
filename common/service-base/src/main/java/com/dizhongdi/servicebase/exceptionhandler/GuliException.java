@@ -21,6 +21,14 @@ public class GuliException extends RuntimeException {
     @ApiModelProperty(value = "状态码")
     private Integer code;
 
+    @Override
+    public String toString() {
+        return "GuliException{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                '}';
+    }
+
     private String msg;
 
 }
