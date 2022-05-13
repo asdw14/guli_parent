@@ -28,7 +28,7 @@ import java.util.List;
  * @since 2022-05-08
  */
 @RestController
-@RequestMapping("/serviceedu/teacher")
+@RequestMapping("/eduservice/teacher")
 @Api(description="讲师管理")
 @CrossOrigin
 public class EduTeacherController {
@@ -106,17 +106,17 @@ public class EduTeacherController {
     @GetMapping("{id}")
     @ApiOperation(value = "通过id查讲师")
     public R queryById(@PathVariable String id){
-        try {
-            int i = 10/0;
-        }catch (Exception e){
-            throw new GuliException(5000,"自定义异常");
-        }
+//        try {
+//            int i = 10/0;
+//        }catch (Exception e){
+//            throw new GuliException(5000,"自定义异常");
+//        }
         return R.ok().data("items",eduTeacherService.getById(id));
     }
 
-    @PutMapping("")
+    @PostMapping("update")
     @ApiOperation(value = "修改讲师")
-    public R updateById(EduTeacher eduTeacher){
+    public R updateById(@RequestBody EduTeacher eduTeacher){
         boolean b = eduTeacherService.updateById(eduTeacher);
         if (b){
             return R.ok();
