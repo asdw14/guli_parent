@@ -2,7 +2,10 @@ package com.dizhongdi.serviceedu.service;
 
 import com.dizhongdi.serviceedu.entity.EduSubject;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dizhongdi.serviceedu.vo.SubjectOneVo;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface EduSubjectService extends IService<EduSubject> {
 
+    //导入课程数据列表
     void importSubjectData(MultipartFile file, EduSubjectService subjectService);
+//    嵌套课程数据列表
+    List<SubjectOneVo> nestedList();
 }

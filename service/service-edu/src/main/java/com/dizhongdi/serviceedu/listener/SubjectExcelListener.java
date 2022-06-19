@@ -42,8 +42,8 @@ public class SubjectExcelListener extends AnalysisEventListener<ExcelSubjectData
         //获取一级分类id值
         String id = existOneSubject(user.getOneSubjectName()).getId();
         //添加二级分类
-        if (existTwoSubject(user.getOneSubjectName(),id)==null){
-            subjectService.save(new EduSubject().setTitle(user.getOneSubjectName()).setParentId(id));
+        if (existTwoSubject(user.getTwoSubjectName(),id)==null){
+            subjectService.save(new EduSubject().setTitle(user.getTwoSubjectName()).setParentId(id));
         }
     }
 
