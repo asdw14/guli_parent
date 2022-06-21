@@ -2,6 +2,9 @@ package com.dizhongdi.serviceedu.service;
 
 import com.dizhongdi.serviceedu.entity.EduChapter;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dizhongdi.serviceedu.vo.chapter.ChapterVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-06-19
  */
 public interface EduChapterService extends IService<EduChapter> {
+
+//    嵌套章节数据列表
+    List<ChapterVo> nestedList(String courseId);
 
 }
