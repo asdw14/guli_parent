@@ -1,6 +1,7 @@
 package com.dizhongdi.serviceedu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.dizhongdi.servicebase.exceptionhandler.GuliException;
 import com.dizhongdi.serviceedu.entity.EduChapter;
 import com.dizhongdi.serviceedu.entity.EduVideo;
 import com.dizhongdi.serviceedu.mapper.EduChapterMapper;
@@ -68,5 +69,20 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         
 
         return chapterList;
+    }
+
+//    根据ID删除章节
+    @Override
+    public boolean removeChapterById(String id) {
+        List<EduVideo> videoList = eduVideoService.list(new QueryWrapper<EduVideo>().eq("chapter_id", id));
+        if (videoList.size()>0){
+            throw new GuliException(20001,"该分章节下存在视频课程，请先删除视频课程");
+        }
+        int i = baseMapper.deleteById(id);
+        if (i>0){
+            return true;
+        }
+        return false;
+
     }
 }

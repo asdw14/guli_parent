@@ -7,11 +7,8 @@ import com.dizhongdi.serviceedu.service.EduChapterService;
 import com.dizhongdi.serviceedu.vo.chapter.ChapterVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -38,6 +35,47 @@ public class EduChapterController {
     public R nestedListByCourseId(String courseId){
         List<ChapterVo> chapterList = eduChapterService.nestedList(courseId);
         return R.ok().data("items",chapterList);
+    }
+
+    @ApiOperation(value = "新增章节")
+    @PostMapping("")
+    public R save( @RequestBody EduChapter chapter){
+        boolean save = eduChapterService.save(chapter);
+        if (save){
+            return R.ok();
+        }
+        return R.error();
+    }
+
+    @ApiOperation(value = "根据ID查询章节")
+    @GetMapping("{id}")
+    public R getById ( @PathVariable String id){
+        EduChapter chapter = eduChapterService.getById(id);
+            return R.ok().data("item",chapter);
+    }
+
+    @ApiOperation(value = "根据ID修改章节")
+    @PutMapping("{id}")
+    public R upadteById ( @PathVariable String id , @RequestBody EduChapter chapter){
+        boolean b = eduChapterService.updateById(chapter.setId(id));
+        if (b){
+            return R.ok().data("item",chapter);
+
+        }else {
+            return R.error();
+        }
+    }
+
+    @ApiOperation(value = "根据ID删除章节")
+    @DeleteMapping("{id}")
+    public R upadteById ( @PathVariable String id){
+        boolean b = eduChapterService.removeChapterById(id);
+        if (b){
+            return R.ok();
+
+        }else {
+            return R.error();
+        }
     }
 
 
