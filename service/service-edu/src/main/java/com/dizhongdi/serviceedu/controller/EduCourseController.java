@@ -4,6 +4,7 @@ package com.dizhongdi.serviceedu.controller;
 import com.dizhongdi.commonutils.R;
 import com.dizhongdi.serviceedu.service.EduCourseService;
 import com.dizhongdi.serviceedu.vo.CourseInfoVo;
+import com.dizhongdi.serviceedu.vo.CoursePublishVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,8 @@ public class EduCourseController {
     @ApiOperation(value = "更新课程")
     @PostMapping("updateCourseInfo")
     public R updateCourseInfoById(@RequestBody CourseInfoVo courseInfoVo){
-
         String id = eduCourseService.updateCourseInfo(courseInfoVo);
         return R.ok().data("cid",id);
-
     }
 
 
@@ -46,7 +45,20 @@ public class EduCourseController {
     public R addCourseInfo( @ApiParam(name = "id", value = "课程ID", required = true) @PathVariable  String id){
         CourseInfoVo courseInfoVo = eduCourseService.getCourseInfoFormById(id);
         return R.ok().data("item",courseInfoVo);
+    }
 
+    @ApiOperation(value = "根据ID获取课程发布信息")
+    @GetMapping("coursePublishInfo/{id}")
+    public R getCoursePublishVoById(@PathVariable String id){
+        CoursePublishVo coursePublishVo = eduCourseService.getCoursePublishVoById(id);
+        return R.ok().data("item",coursePublishVo);
+    }
+
+    @ApiOperation(value = "根据id发布课程")
+    @PutMapping("publishCourse/{id}")
+    public R publishCourseById(@PathVariable String id){
+        eduCourseService.publishCourseById(id);
+        return R.ok();
     }
 
 }

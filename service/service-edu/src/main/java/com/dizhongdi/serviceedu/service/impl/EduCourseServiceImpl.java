@@ -8,6 +8,7 @@ import com.dizhongdi.serviceedu.service.EduCourseDescriptionService;
 import com.dizhongdi.serviceedu.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dizhongdi.serviceedu.vo.CourseInfoVo;
+import com.dizhongdi.serviceedu.vo.CoursePublishVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -75,5 +76,19 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         eduCourseDescriptionService.updateById(new EduCourseDescription().setId(courseInfoVo.getId()).setDescription(courseInfoVo.getDescription()));
 
         return courseInfoVo.getId();
+    }
+
+//    根据ID获取课程发布信息
+    @Override
+    public CoursePublishVo getCoursePublishVoById(String id) {
+        return baseMapper.selectCoursePublishVoById(id);
+    }
+
+    //根据id发布课程
+    @Override
+    public void publishCourseById(String id) {
+        EduCourse eduCourse = baseMapper.selectById(id);
+        eduCourse.setStatus("Normal");
+        baseMapper.updateById(eduCourse);
     }
 }
