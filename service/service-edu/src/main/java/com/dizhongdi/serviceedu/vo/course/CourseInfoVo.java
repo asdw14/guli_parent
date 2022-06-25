@@ -1,4 +1,4 @@
-package com.dizhongdi.serviceedu.vo;
+package com.dizhongdi.serviceedu.vo.course;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

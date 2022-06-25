@@ -1,18 +1,25 @@
 package com.dizhongdi.serviceedu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.servicebase.exceptionhandler.GuliException;
 import com.dizhongdi.serviceedu.entity.EduCourse;
 import com.dizhongdi.serviceedu.entity.EduCourseDescription;
+import com.dizhongdi.serviceedu.entity.EduTeacher;
 import com.dizhongdi.serviceedu.mapper.EduCourseMapper;
 import com.dizhongdi.serviceedu.service.EduCourseDescriptionService;
 import com.dizhongdi.serviceedu.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dizhongdi.serviceedu.vo.CourseInfoVo;
-import com.dizhongdi.serviceedu.vo.CoursePublishVo;
+import com.dizhongdi.serviceedu.vo.course.CourseInfoVo;
+import com.dizhongdi.serviceedu.vo.course.CoursePublishVo;
+import com.dizhongdi.serviceedu.vo.course.CourseQuery;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * <p>
@@ -90,5 +97,25 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         EduCourse eduCourse = baseMapper.selectById(id);
         eduCourse.setStatus("Normal");
         baseMapper.updateById(eduCourse);
+    }
+
+    //分页查询课程列表
+    @Override
+    public IPage<EduCourse> pageQuery(Page<EduCourse> coursePage, CourseQuery courseQuery) {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(courseQuery.getTitle())){
+            wrapper.eq("title",courseQuery.getTitle());
+        }
+        if (!StringUtils.isEmpty(courseQuery.getTeacherId())){
+            wrapper.eq("teacher_id",courseQuery.getTeacherId());
+        }
+        if (!StringUtils.isEmpty(courseQuery.getSubjectId())){
+            wrapper.eq("subject_id",courseQuery.getSubjectId());
+        }
+        if (!StringUtils.isEmpty(courseQuery.getSubjectParentId())){
+            wrapper.eq("subject_parent_id",courseQuery.getSubjectParentId());
+        }
+
+        return baseMapper.selectPage(coursePage,wrapper);
     }
 }

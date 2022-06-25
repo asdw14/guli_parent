@@ -1,14 +1,21 @@
 package com.dizhongdi.serviceedu.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.commonutils.R;
+import com.dizhongdi.serviceedu.entity.EduCourse;
 import com.dizhongdi.serviceedu.service.EduCourseService;
-import com.dizhongdi.serviceedu.vo.CourseInfoVo;
-import com.dizhongdi.serviceedu.vo.CoursePublishVo;
+import com.dizhongdi.serviceedu.vo.course.CourseInfoVo;
+import com.dizhongdi.serviceedu.vo.course.CoursePublishVo;
+import com.dizhongdi.serviceedu.vo.course.CourseQuery;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -59,6 +66,21 @@ public class EduCourseController {
     public R publishCourseById(@PathVariable String id){
         eduCourseService.publishCourseById(id);
         return R.ok();
+    }
+
+    @ApiOperation(value = "课程列表")
+    @GetMapping("listCourse")
+    public R listCourse(){
+        List<EduCourse> list = eduCourseService.list(new QueryWrapper<>());
+        return R.ok().data("items" , list);
+    }
+
+    @ApiOperation(value = "分页课程列表")
+    @PostMapping("getPageList/{page}/{limit}")
+    public R pageQuery(@PathVariable Long page, @PathVariable Long limit , @RequestBody CourseQuery courseQuery){
+        Page<EduCourse> coursePage = new Page<>(page,limit);
+        IPage<EduCourse> courseIPage = eduCourseService.pageQuery(coursePage,courseQuery);
+        return R.ok().data("items" , courseIPage.getRecords()).data("total",courseIPage.getTotal());
     }
 
 }

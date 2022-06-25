@@ -1,9 +1,14 @@
 package com.dizhongdi.serviceedu.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.serviceedu.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.dizhongdi.serviceedu.vo.CourseInfoVo;
-import com.dizhongdi.serviceedu.vo.CoursePublishVo;
+import com.dizhongdi.serviceedu.vo.course.CourseInfoVo;
+import com.dizhongdi.serviceedu.vo.course.CoursePublishVo;
+import com.dizhongdi.serviceedu.vo.course.CourseQuery;
+
+import java.util.List;
 
 /**
  * <p>
@@ -27,4 +32,7 @@ public interface EduCourseService extends IService<EduCourse> {
 
     //根据id发布课程
     void publishCourseById(String id);
+
+    //分页查询课程列表
+    IPage<EduCourse> pageQuery(Page<EduCourse> coursePage, CourseQuery courseQuery);
 }

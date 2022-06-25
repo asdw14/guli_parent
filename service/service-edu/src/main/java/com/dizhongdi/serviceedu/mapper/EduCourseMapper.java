@@ -2,7 +2,7 @@ package com.dizhongdi.serviceedu.mapper;
 
 import com.dizhongdi.serviceedu.entity.EduCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.dizhongdi.serviceedu.vo.CoursePublishVo;
+import com.dizhongdi.serviceedu.vo.course.CoursePublishVo;
 
 /**
  * <p>
