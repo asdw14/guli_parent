@@ -20,4 +20,7 @@ public interface EduChapterService extends IService<EduChapter> {
     List<ChapterVo> nestedList(String courseId);
 
     boolean removeChapterById(String id);
+
+    //根据课程id删除所有章节
+    boolean removeByCourseId(String id);
 }

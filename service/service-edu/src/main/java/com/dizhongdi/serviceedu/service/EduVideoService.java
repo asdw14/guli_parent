@@ -19,4 +19,7 @@ public interface EduVideoService extends IService<EduVideo> {
     void updateVideoInfoById(VideoInfoForm videoInfoForm);
 
     VideoInfoForm getVideoInfoFormById(String id);
+
+    //通过课程id删除所有小节视频
+    boolean removeByCourseId(String id);
 }

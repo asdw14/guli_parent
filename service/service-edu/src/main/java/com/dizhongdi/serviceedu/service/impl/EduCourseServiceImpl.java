@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.servicebase.exceptionhandler.GuliException;
-import com.dizhongdi.serviceedu.entity.EduCourse;
-import com.dizhongdi.serviceedu.entity.EduCourseDescription;
-import com.dizhongdi.serviceedu.entity.EduTeacher;
+import com.dizhongdi.serviceedu.entity.*;
 import com.dizhongdi.serviceedu.mapper.EduCourseMapper;
+import com.dizhongdi.serviceedu.service.EduChapterService;
 import com.dizhongdi.serviceedu.service.EduCourseDescriptionService;
 import com.dizhongdi.serviceedu.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dizhongdi.serviceedu.service.EduVideoService;
 import com.dizhongdi.serviceedu.vo.course.CourseInfoVo;
 import com.dizhongdi.serviceedu.vo.course.CoursePublishVo;
 import com.dizhongdi.serviceedu.vo.course.CourseQuery;
@@ -35,6 +35,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     //注入课程简介接口
     @Autowired
     EduCourseDescriptionService eduCourseDescriptionService;
+    @Autowired
+    EduChapterService eduChapterService;
+    @Autowired
+    EduVideoService eduVideoService;
+
+
     //添加课程基本信息的方法
     @Override
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
@@ -117,5 +123,19 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         }
 
         return baseMapper.selectPage(coursePage,wrapper);
+    }
+
+    //删除课程
+    @Override
+    public boolean removeCourseById(String id) {
+        //删除小节
+        eduVideoService.removeByCourseId(id);
+
+        //删除章节
+        eduChapterService.removeByCourseId(id);
+        //删除课程介绍
+        eduCourseDescriptionService.removeById(id);
+        //删除课程信息
+        return this.removeById(id);
     }
 }

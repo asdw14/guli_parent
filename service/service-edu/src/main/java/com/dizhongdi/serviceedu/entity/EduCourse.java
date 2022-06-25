@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.apache.ibatis.annotations.Delete;
 
 /**
  * <p>
@@ -68,6 +69,7 @@ public class EduCourse implements Serializable {
     private String status;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
+    @TableLogic
     private int isDeleted = 0;
 
     @ApiModelProperty(value = "创建时间")

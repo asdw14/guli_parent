@@ -1,6 +1,8 @@
 package com.dizhongdi.serviceedu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dizhongdi.servicebase.exceptionhandler.GuliException;
+import com.dizhongdi.serviceedu.entity.EduChapter;
 import com.dizhongdi.serviceedu.entity.EduVideo;
 import com.dizhongdi.serviceedu.mapper.EduVideoMapper;
 import com.dizhongdi.serviceedu.service.EduVideoService;
@@ -55,5 +57,11 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
         }else {
             throw new GuliException(20001, "数据不存在");
         }
+    }
+
+    //通过课程id删除所有小节视频
+    @Override
+    public boolean removeByCourseId(String id) {
+        return baseMapper.delete(new QueryWrapper<EduVideo>().eq("course_id",id)) > 0 ? true : false;
     }
 }
