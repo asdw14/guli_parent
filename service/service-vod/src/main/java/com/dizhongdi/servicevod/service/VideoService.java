@@ -11,5 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
  * @Author:dizhongdi
  */
 public interface VideoService {
+    //上传视频到阿里云视频点播
     String uploadVideo(MultipartFile file);
+
+    //删除云端视频
+    void removeVideo(String id);
 }

@@ -5,6 +5,10 @@ import com.aliyun.vod.upload.req.UploadFileStreamRequest;
 import com.aliyun.vod.upload.req.UploadStreamRequest;
 import com.aliyun.vod.upload.resp.UploadFileStreamResponse;
 import com.aliyun.vod.upload.resp.UploadStreamResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.profile.DefaultProfile;
+import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
+import com.aliyuncs.vod.model.v20170321.DeleteVideoResponse;
 import com.dizhongdi.servicebase.exceptionhandler.GuliException;
 import com.dizhongdi.servicevod.service.VideoService;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +39,7 @@ public class VideoServiceImpl implements VideoService {
     private  String accessKeySecret ;
 
     @Override
+    //上传视频到阿里云视频点播
     public String uploadVideo(MultipartFile file) {
         //账号AK信息请填写(必选)
 
@@ -55,6 +60,26 @@ public class VideoServiceImpl implements VideoService {
         }
         return testUploadStream(accessKeyId, accessKeySecret, title, originalFilename, inputStream);
     }
+
+    //删除云端视频
+    @Override
+    public void removeVideo(String id) {
+        String regionId = "cn-shanghai";  // 点播服务接入地域
+
+        try {
+            DefaultProfile profile = DefaultProfile.getProfile(regionId, accessKeyId, accessKeySecret);
+            DefaultAcsClient client = new DefaultAcsClient(profile);
+            DeleteVideoRequest request = new DeleteVideoRequest();
+            //支持传入多个视频ID，多个用逗号分隔
+            request.setVideoIds(id);
+            DeleteVideoResponse response = client.getAcsResponse(request);
+            System.out.print("RequestId = " + response.getRequestId() + "\n");
+        } catch (Exception e) {
+            System.out.print("ErrorMessage = " + e.getLocalizedMessage());
+            throw new GuliException(20001, "视频删除失败");
+        }
+    }
+
     /**
      * 流式上传接口
      *
