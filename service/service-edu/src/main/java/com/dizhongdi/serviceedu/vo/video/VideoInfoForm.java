@@ -36,6 +36,9 @@ public class VideoInfoForm {
     @ApiModelProperty(value = "显示排序")
     private Integer sort;
 
+    @ApiModelProperty(value = "云服务器上存储的视频文件名称")
+    private String videoOriginalName;
+
     @ApiModelProperty(value = "是否可以试听：0默认 1免费")
     private Boolean free;
 }

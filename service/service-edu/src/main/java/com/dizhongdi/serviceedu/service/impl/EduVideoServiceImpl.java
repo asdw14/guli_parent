@@ -2,6 +2,7 @@ package com.dizhongdi.serviceedu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dizhongdi.servicebase.exceptionhandler.GuliException;
+import com.dizhongdi.serviceedu.client.VodClient;
 import com.dizhongdi.serviceedu.entity.EduChapter;
 import com.dizhongdi.serviceedu.entity.EduVideo;
 import com.dizhongdi.serviceedu.mapper.EduVideoMapper;
@@ -9,7 +10,9 @@ import com.dizhongdi.serviceedu.service.EduVideoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dizhongdi.serviceedu.vo.video.VideoInfoForm;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * <p>
@@ -21,6 +24,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> implements EduVideoService {
+
+    //Feign服务调用
+    @Autowired
+    VodClient vodClient;
 
 //    课时保存
     @Override
@@ -63,5 +70,18 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
     @Override
     public boolean removeByCourseId(String id) {
         return baseMapper.delete(new QueryWrapper<EduVideo>().eq("course_id",id)) > 0 ? true : false;
+    }
+
+    //根据id删除课时，并删除云端视频资源
+    @Override
+    public boolean removeVideoById(String id) {
+        EduVideo video = baseMapper.selectById(id);
+        String videoSourceId = video.getVideoSourceId();
+        //如果视频资源存在则删除
+        if (!StringUtils.isEmpty(videoSourceId)){
+            vodClient.removeVideo(videoSourceId);
+        }
+        //如果删除的返回结果大于0条说明删除成功
+        return baseMapper.deleteById(id) > 0 ? true : false;
     }
 }

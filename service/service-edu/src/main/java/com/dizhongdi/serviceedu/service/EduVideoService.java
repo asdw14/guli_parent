@@ -22,4 +22,7 @@ public interface EduVideoService extends IService<EduVideo> {
 
     //通过课程id删除所有小节视频
     boolean removeByCourseId(String id);
+
+    //根据id删除课时，并删除云端视频资源
+    boolean removeVideoById(String id);
 }

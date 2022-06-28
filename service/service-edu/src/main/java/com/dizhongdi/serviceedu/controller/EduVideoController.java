@@ -2,12 +2,14 @@ package com.dizhongdi.serviceedu.controller;
 
 
 import com.dizhongdi.commonutils.R;
+import com.dizhongdi.serviceedu.client.VodClient;
 import com.dizhongdi.serviceedu.entity.EduVideo;
 import com.dizhongdi.serviceedu.service.EduVideoService;
 import com.dizhongdi.serviceedu.vo.video.VideoInfoForm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -55,7 +57,8 @@ public class EduVideoController {
     @ApiOperation(value = "根据ID删除课时")
     @DeleteMapping("{id}")
     public R removeById(@PathVariable String id ){
-        if(eduVideoService.removeById(id)){
+
+        if(eduVideoService.removeVideoById(id)){
             return R.ok();
         }else{
             return R.error().message("删除失败");
