@@ -1,6 +1,7 @@
 package com.dizhongdi.serviceedu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.dizhongdi.commonutils.R;
 import com.dizhongdi.servicebase.exceptionhandler.GuliException;
 import com.dizhongdi.serviceedu.client.VodClient;
 import com.dizhongdi.serviceedu.entity.EduChapter;
@@ -76,7 +77,7 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
     public boolean removeByCourseId(String courseId) {
         //远程调用根据云端视频id列表删除所有视频
         QueryWrapper<EduVideo> wrapper = new QueryWrapper<>();
-        wrapper.eq("course_id",courseId).select("video_source_id");
+        wrapper.eq("course_id",courseId);
         List<EduVideo> videos = baseMapper.selectList(wrapper);
         ArrayList<String> list = new ArrayList<>();
         //得到所有视频列表的云端原始视频id
@@ -85,10 +86,12 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
                 list.add(video.getVideoSourceId());
             }
         }
-
         //调用vod服务删除远程视频
         if (list.size()>0){
-            vodClient.removeVideoList(list);
+            R r = vodClient.removeVideoList(list);
+            if (r.getCode()==20001){
+                throw new GuliException(20001,"删除失败，服务垮了");
+            }
         }
         //删除video表的记录
         return baseMapper.delete(new QueryWrapper<EduVideo>().eq("course_id",courseId)) > 0 ? true : false;

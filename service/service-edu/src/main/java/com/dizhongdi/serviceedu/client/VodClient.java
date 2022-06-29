@@ -18,7 +18,7 @@ import java.util.List;
  * @Date: 2022/6/28 23:25
  * @Author:dizhongdi
  */
-@FeignClient("service-vod")
+@FeignClient(value = "service-vod",fallback = VodFileDegradeFeignClient.class)
 @Component
 public interface VodClient {
     //远程调用根据id删除云端视频
