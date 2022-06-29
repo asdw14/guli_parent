@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * ClassName:VideoServiceImpl
@@ -78,6 +79,16 @@ public class VideoServiceImpl implements VideoService {
             System.out.print("ErrorMessage = " + e.getLocalizedMessage());
             throw new GuliException(20001, "视频删除失败");
         }
+    }
+
+    //批量删除视频
+    @Override
+    public void removeVideoList(List<String> videoIdList) {
+        //多个id
+        String ids = String.join(",", videoIdList);
+        System.out.println(ids);
+        this.removeVideo(ids);
+
     }
 
     /**

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * ClassName:VideoAdminController
  * Package:com.dizhongdi.servicevod
@@ -33,9 +35,21 @@ public class VideoAdminController {
 
     }
 
+    //通过id删除单个视频
     @DeleteMapping("deleteVideo/{videoId}")
     public R removeVideo(@ApiParam(name = "videoId", value = "云端视频id", required = true) @PathVariable String videoId){
         videoService.removeVideo(videoId);
         return R.ok().message("删除视频成功");
+    }
+
+    /**
+     * 批量删除视频
+     * @param videoIdList
+     * @return
+     */
+    @DeleteMapping("deletebatch")
+    public R removeVideoList(@RequestParam("videoIdList") List<String> videoIdList){
+        videoService.removeVideoList(videoIdList);
+        return R.ok().message("视频删除成功");
     }
 }

@@ -2,6 +2,8 @@ package com.dizhongdi.servicevod.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * ClassName:VideoService
  * Package:com.dizhongdi.servicevod.service
@@ -16,4 +18,8 @@ public interface VideoService {
 
     //删除云端视频
     void removeVideo(String id);
+
+    //批量删除云端视频
+    void removeVideoList(List<String> videoIdList);
+
 }
