@@ -14,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * <p>
  * 课程视频 服务实现类
@@ -68,8 +73,25 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
 
     //通过课程id删除所有小节视频
     @Override
-    public boolean removeByCourseId(String id) {
-        return baseMapper.delete(new QueryWrapper<EduVideo>().eq("course_id",id)) > 0 ? true : false;
+    public boolean removeByCourseId(String courseId) {
+        //远程调用根据云端视频id列表删除所有视频
+        QueryWrapper<EduVideo> wrapper = new QueryWrapper<>();
+        wrapper.eq("course_id",courseId).select("video_source_id");
+        List<EduVideo> videos = baseMapper.selectList(wrapper);
+        ArrayList<String> list = new ArrayList<>();
+        //得到所有视频列表的云端原始视频id
+        for (EduVideo video: videos) {
+            if(!StringUtils.isEmpty(video.getVideoSourceId())){
+                list.add(video.getVideoSourceId());
+            }
+        }
+
+        //调用vod服务删除远程视频
+        if (list.size()>0){
+            vodClient.removeVideoList(list);
+        }
+        //删除video表的记录
+        return baseMapper.delete(new QueryWrapper<EduVideo>().eq("course_id",courseId)) > 0 ? true : false;
     }
 
     //根据id删除课时，并删除云端视频资源
