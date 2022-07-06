@@ -32,7 +32,7 @@ public class IndexController {
     private EduTeacherService teacherService;
 
     //查询前8条热门课程，查询前4条名师
-    @GetMapping("index")
+    @GetMapping("")
     public R index() {
         //查询前8条热门课程
         QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
@@ -46,7 +46,7 @@ public class IndexController {
         wrapperTeacher.last("limit 4");
         List<EduTeacher> teacherList = teacherService.list(wrapperTeacher);
 
-        return R.ok().data("eduList",eduList).data("teacherList",teacherList);
+        return R.ok().data("courseList",eduList).data("teacherList",teacherList);
 
     }
 

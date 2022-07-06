@@ -7,6 +7,7 @@ import com.dizhongdi.servicecms.entity.CrmBanner;
 import com.dizhongdi.servicecms.mapper.CrmBannerMapper;
 import com.dizhongdi.servicecms.service.CrmBannerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,8 +32,9 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
 
     //获取首页banner
     @Override
+    @Cacheable(value = "banner", key = "'selectIndexList'")
     public List<CrmBanner> selectIndexList() {
-        List<CrmBanner> crmBanners = baseMapper.selectList(new QueryWrapper<>());
+        List<CrmBanner> crmBanners = baseMapper.selectList(new QueryWrapper<CrmBanner>().orderByDesc("sort"));
         return crmBanners;
     }
 }
