@@ -1,12 +1,16 @@
 package com.dizhongdi.serviceucenter.controller;
 
+import com.dizhongdi.commonutils.JwtUtils;
 import com.dizhongdi.commonutils.R;
+import com.dizhongdi.serviceucenter.entity.LoginInfo;
 import com.dizhongdi.serviceucenter.entity.LoginVo;
 import com.dizhongdi.serviceucenter.entity.RegisterVo;
 import com.dizhongdi.serviceucenter.service.UcenterMemberService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * ClassName:MemberApiController
@@ -35,5 +39,13 @@ public class MemberApiController {
     public R register(@RequestBody RegisterVo registerVo){
         memberService.register(registerVo);
         return R.ok();
+    }
+
+    @ApiOperation(value = "根据token获取登录信息")
+    @GetMapping("auth/getLoginInfo")
+    public R getLoginInfo(HttpServletRequest request){
+        String id = JwtUtils.getMemberIdByJwtToken(request);
+        LoginInfo loginInfo = memberService.getLoginInfo(id);
+        return R.ok().data("item",loginInfo);
     }
 }

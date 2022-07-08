@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/api/msm")
+@RequestMapping("/msm")
 @Api(description="验证码发送")
 public class MsmApiController {
     @Autowired

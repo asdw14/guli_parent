@@ -1,5 +1,6 @@
 package com.dizhongdi.serviceucenter.service;
 
+import com.dizhongdi.serviceucenter.entity.LoginInfo;
 import com.dizhongdi.serviceucenter.entity.LoginVo;
 import com.dizhongdi.serviceucenter.entity.RegisterVo;
 import com.dizhongdi.serviceucenter.entity.UcenterMember;
@@ -18,4 +19,6 @@ public interface UcenterMemberService extends IService<UcenterMember> {
     String login(LoginVo loginVo);
     //    会员注册
     void register(RegisterVo registerVo);
+//    根据token获取用户信息
+    LoginInfo getLoginInfo(String id);
 }

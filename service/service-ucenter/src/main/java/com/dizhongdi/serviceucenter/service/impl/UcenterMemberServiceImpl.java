@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dizhongdi.commonutils.JwtUtils;
 import com.dizhongdi.commonutils.MD5;
 import com.dizhongdi.servicebase.exceptionhandler.GuliException;
+import com.dizhongdi.serviceucenter.entity.LoginInfo;
 import com.dizhongdi.serviceucenter.entity.LoginVo;
 import com.dizhongdi.serviceucenter.entity.RegisterVo;
 import com.dizhongdi.serviceucenter.entity.UcenterMember;
 import com.dizhongdi.serviceucenter.mapper.UcenterMemberMapper;
 import com.dizhongdi.serviceucenter.service.UcenterMemberService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -91,8 +93,17 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         ucenterMember.setPassword(MD5.encrypt(password));
         ucenterMember.setNickname(nickname);
         ucenterMember.setIsDisabled(false);
-        ucenterMember.setAvatar("");
+        ucenterMember.setAvatar("https://dizhongdi-guli.oss-cn-hangzhou.aliyuncs.com/cover/1.jpg");
         this.save(ucenterMember);
 
+    }
+
+//    根据token获取用户信息
+    @Override
+    public LoginInfo getLoginInfo(String id) {
+        UcenterMember ucenterMember = this.getById(id);
+        LoginInfo loginInfo = new LoginInfo();
+        BeanUtils.copyProperties(ucenterMember,loginInfo);
+        return loginInfo;
     }
 }
