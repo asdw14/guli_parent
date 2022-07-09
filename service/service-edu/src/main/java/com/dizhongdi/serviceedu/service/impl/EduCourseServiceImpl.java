@@ -141,4 +141,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         //删除课程信息
         return this.removeById(id);
     }
+
+    //根据讲师id查询这个讲师的课程列表
+    @Override
+    public List<EduCourse> selectByTeacherId(String id) {
+        List<EduCourse> courseList = baseMapper.selectList(new QueryWrapper<EduCourse>().eq("teacher_id", id));
+        return courseList;
+    }
 }

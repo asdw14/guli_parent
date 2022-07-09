@@ -38,4 +38,6 @@ public interface EduCourseService extends IService<EduCourse> {
 
     //根据id删除所有章节/小节/视频
     boolean removeCourseById(String id);
+    //根据讲师id查询这个讲师的课程列表
+    List<EduCourse> selectByTeacherId(String id);
 }

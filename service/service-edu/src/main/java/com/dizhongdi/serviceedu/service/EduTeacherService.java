@@ -1,8 +1,11 @@
 package com.dizhongdi.serviceedu.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.serviceedu.entity.EduTeacher;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -14,4 +17,5 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface EduTeacherService extends IService<EduTeacher> {
 
+    Map<String, Object> pageListWeb(Page<EduTeacher> pageParam);
 }
