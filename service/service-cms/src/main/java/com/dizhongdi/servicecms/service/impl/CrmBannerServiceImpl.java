@@ -9,6 +9,7 @@ import com.dizhongdi.servicecms.service.CrmBannerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -36,5 +37,14 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
     public List<CrmBanner> selectIndexList() {
         List<CrmBanner> crmBanners = baseMapper.selectList(new QueryWrapper<CrmBanner>().orderByDesc("sort"));
         return crmBanners;
+    }
+
+    //添加banner
+    @Override
+    public void saveBanner(CrmBanner crmBanner) {
+        if (StringUtils.isEmpty(crmBanner.getSort())){
+            crmBanner.setSort(0);
+        }
+        baseMapper.insert(crmBanner);
     }
 }

@@ -5,11 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.commonutils.R;
+import com.dizhongdi.servicecms.entity.BannerInfoVo;
 import com.dizhongdi.servicecms.entity.CrmBanner;
 import com.dizhongdi.servicecms.service.CrmBannerService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,11 +25,14 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022-07-04
  */
 @RestController
-@RequestMapping("/eduservice/banner")
+@RequestMapping("/educms/banner")
+@CrossOrigin
 public class CrmBannerController {
 
     @Autowired
     CrmBannerService bannerService;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @ApiOperation(value = "获取Banner分页列表")
     @GetMapping("{page}/{limit}")
@@ -39,6 +46,13 @@ public class CrmBannerController {
         return R.ok().data("items",pageParam.getRecords()).data("total",pageParam.getTotal());
     }
 
+    @ApiOperation(value = "获取Banner列表")
+    @Cacheable(value = "banner", key = "'findAll'")
+    @GetMapping("findAll")
+    public R findAll() {
+        return R.ok().data("items",bannerService.list(new QueryWrapper<CrmBanner>()));
+    }
+
     @ApiOperation(value = "获取Banner")
     @GetMapping("get/{id}")
     public R get(@PathVariable String id) {
@@ -50,7 +64,20 @@ public class CrmBannerController {
     @ApiOperation(value = "修改Banner")
     @PutMapping("update")
     public R update(@RequestBody CrmBanner crmBanner) {
+        redisTemplate.delete("banner::findAll");
         bannerService.updateById(crmBanner);
+        redisTemplate.delete("banner::findAll");
+        return R.ok();
+    }
+
+    @ApiOperation(value = "添加Banner")
+    @PostMapping("save")
+    public R save(@RequestBody BannerInfoVo infoVo) {
+        redisTemplate.delete("banner::findAll");
+        CrmBanner crmBanner = new CrmBanner();
+        BeanUtils.copyProperties(infoVo,crmBanner);
+        bannerService.saveBanner(crmBanner);
+        redisTemplate.delete("banner::findAll");
         return R.ok();
     }
 
