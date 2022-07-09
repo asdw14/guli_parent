@@ -21,4 +21,6 @@ public interface UcenterMemberService extends IService<UcenterMember> {
     void register(RegisterVo registerVo);
 //    根据token获取用户信息
     LoginInfo getLoginInfo(String id);
+
+    UcenterMember getByOpenid(String openid);
 }

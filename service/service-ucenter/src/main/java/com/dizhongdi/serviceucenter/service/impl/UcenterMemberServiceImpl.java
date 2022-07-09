@@ -103,7 +103,21 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
     public LoginInfo getLoginInfo(String id) {
         UcenterMember ucenterMember = this.getById(id);
         LoginInfo loginInfo = new LoginInfo();
-        BeanUtils.copyProperties(ucenterMember,loginInfo);
+        if (ucenterMember != null) {
+            BeanUtils.copyProperties(ucenterMember, loginInfo);
+
+        }
         return loginInfo;
+    }
+
+
+    @Override
+    public UcenterMember getByOpenid(String openid) {
+
+        QueryWrapper<UcenterMember> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("openid", openid);
+
+        UcenterMember member = baseMapper.selectOne(queryWrapper);
+        return member;
     }
 }

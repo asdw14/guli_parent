@@ -1,4 +1,4 @@
-package com.dizhongdi.serviceucenter.controller;
+package com.dizhongdi.serviceucenter.controller.api;
 
 import com.dizhongdi.commonutils.JwtUtils;
 import com.dizhongdi.commonutils.R;
