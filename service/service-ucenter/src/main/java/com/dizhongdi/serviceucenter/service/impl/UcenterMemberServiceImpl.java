@@ -13,6 +13,7 @@ import com.dizhongdi.serviceucenter.service.UcenterMemberService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -110,7 +111,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         return loginInfo;
     }
 
-
+    @Cacheable(value = "openid", key = "'info'")
     @Override
     public UcenterMember getByOpenid(String openid) {
 

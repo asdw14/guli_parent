@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.servicebase.exceptionhandler.GuliException;
 import com.dizhongdi.serviceedu.entity.*;
+import com.dizhongdi.serviceedu.entity.front.CourseQueryVo;
 import com.dizhongdi.serviceedu.mapper.EduCourseMapper;
 import com.dizhongdi.serviceedu.service.EduChapterService;
 import com.dizhongdi.serviceedu.service.EduCourseDescriptionService;
@@ -19,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -147,5 +150,55 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public List<EduCourse> selectByTeacherId(String id) {
         List<EduCourse> courseList = baseMapper.selectList(new QueryWrapper<EduCourse>().eq("teacher_id", id));
         return courseList;
+    }
+
+    //条件查询课程信息
+    @Override
+    public Map<String, Object> pageListWeb(Page<EduCourse> pageParam, CourseQueryVo courseQuery) {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+
+        if (!StringUtils.isEmpty(courseQuery.getSubjectParentId())) {
+            wrapper.eq("subject_parent_id", courseQuery.getSubjectParentId());
+        }
+
+        if (!StringUtils.isEmpty(courseQuery.getSubjectId())) {
+            wrapper.eq("subject_id", courseQuery.getSubjectId());
+        }
+
+        if (!StringUtils.isEmpty(courseQuery.getBuyCountSort())) {
+            wrapper.orderByDesc("buy_count");
+        }
+
+        if (!StringUtils.isEmpty(courseQuery.getGmtCreateSort())) {
+            wrapper.orderByDesc("gmt_create");
+        }
+
+        if (!StringUtils.isEmpty(courseQuery.getPriceSort())) {
+            wrapper.orderByDesc("price");
+        }
+
+        if (!StringUtils.isEmpty(courseQuery.getTitle())){
+            wrapper.eq("title",courseQuery.getTitle());
+        }
+
+        baseMapper.selectPage(pageParam,wrapper);
+        List<EduCourse> records = pageParam.getRecords();
+        long current = pageParam.getCurrent();
+        long pages = pageParam.getPages();
+        long size = pageParam.getSize();
+        long total = pageParam.getTotal();
+        boolean hasNext = pageParam.hasNext();
+        boolean hasPrevious = pageParam.hasPrevious();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("items", records);
+        map.put("current", current);
+        map.put("pages", pages);
+        map.put("size", size);
+        map.put("total", total);
+        map.put("hasNext", hasNext);
+        map.put("hasPrevious", hasPrevious);
+
+        return map;
     }
 }

@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.serviceedu.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dizhongdi.serviceedu.entity.front.CourseQueryVo;
 import com.dizhongdi.serviceedu.vo.course.CourseInfoVo;
 import com.dizhongdi.serviceedu.vo.course.CoursePublishVo;
 import com.dizhongdi.serviceedu.vo.course.CourseQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -40,4 +42,7 @@ public interface EduCourseService extends IService<EduCourse> {
     boolean removeCourseById(String id);
     //根据讲师id查询这个讲师的课程列表
     List<EduCourse> selectByTeacherId(String id);
+
+    //条件查询课程信息
+    Map<String, Object> pageListWeb(Page<EduCourse> pageParam, CourseQueryVo courseQuery);
 }
