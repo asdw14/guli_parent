@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.servicebase.exceptionhandler.GuliException;
 import com.dizhongdi.serviceedu.entity.*;
 import com.dizhongdi.serviceedu.entity.front.CourseQueryVo;
+import com.dizhongdi.serviceedu.entity.front.CourseWebVo;
 import com.dizhongdi.serviceedu.mapper.EduCourseMapper;
 import com.dizhongdi.serviceedu.service.EduChapterService;
 import com.dizhongdi.serviceedu.service.EduCourseDescriptionService;
@@ -200,5 +201,17 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         map.put("hasPrevious", hasPrevious);
 
         return map;
+    }
+
+    @Override
+    public CourseWebVo selectInfoWebById(String courseId) {
+        this.updatePageViewCount(courseId);
+        return baseMapper.selectInfoWebById(courseId);
+    }
+
+    @Override
+    public void updatePageViewCount(String id) {
+        EduCourse eduCourse = baseMapper.selectById(id);
+        baseMapper.updateById(eduCourse.setViewCount(eduCourse.getViewCount()+1));
     }
 }

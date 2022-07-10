@@ -4,12 +4,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.commonutils.R;
 import com.dizhongdi.serviceedu.entity.EduCourse;
 import com.dizhongdi.serviceedu.entity.front.CourseQueryVo;
+import com.dizhongdi.serviceedu.entity.front.CourseWebVo;
+import com.dizhongdi.serviceedu.service.EduChapterService;
 import com.dizhongdi.serviceedu.service.EduCourseService;
+import com.dizhongdi.serviceedu.vo.chapter.ChapterVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +31,8 @@ public class CourseController {
 
     @Autowired
     EduCourseService courseService;
+    @Autowired
+    EduChapterService eduChapterService;
 
     @ApiOperation(value = "分页课程列表")
     @PostMapping(value = "{page}/{limit}")
@@ -42,5 +48,15 @@ public class CourseController {
         Page<EduCourse> pageParam = new Page<EduCourse>(page, limit);
         Map<String, Object> map = courseService.pageListWeb(pageParam, courseQuery);
         return  R.ok().data(map);
+    }
+
+    @ApiOperation(value = "根据ID查询课程")
+    @GetMapping(value = "{courseId}")
+    public R getById(@PathVariable String courseId){
+        //查询课程信息和讲师信息
+        CourseWebVo courseWebVo = courseService.selectInfoWebById(courseId);
+        //查询当前课程的章节信息
+        List<ChapterVo> chapterVos = eduChapterService.nestedList(courseId);
+        return R.ok().data("course",courseWebVo).data("chapterVoList",chapterVos);
     }
 }

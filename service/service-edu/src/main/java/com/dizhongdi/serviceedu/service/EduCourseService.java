@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.serviceedu.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dizhongdi.serviceedu.entity.front.CourseQueryVo;
+import com.dizhongdi.serviceedu.entity.front.CourseWebVo;
 import com.dizhongdi.serviceedu.vo.course.CourseInfoVo;
 import com.dizhongdi.serviceedu.vo.course.CoursePublishVo;
 import com.dizhongdi.serviceedu.vo.course.CourseQuery;
@@ -45,4 +46,13 @@ public interface EduCourseService extends IService<EduCourse> {
 
     //条件查询课程信息
     Map<String, Object> pageListWeb(Page<EduCourse> pageParam, CourseQueryVo courseQuery);
+
+    //查询课程信息和讲师信息
+    CourseWebVo selectInfoWebById(String courseId);
+
+    /**
+     * 更新课程浏览数
+     * @param id
+     */
+    void updatePageViewCount(String id);
 }
