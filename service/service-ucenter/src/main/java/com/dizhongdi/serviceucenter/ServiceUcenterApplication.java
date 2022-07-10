@@ -6,7 +6,7 @@ import org.springframework.cloud.alibaba.nacos.NacosDiscoveryAutoConfiguration;
 import org.springframework.cloud.alibaba.nacos.discovery.NacosDiscoveryClientAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication(exclude = {NacosDiscoveryClientAutoConfiguration.class, NacosDiscoveryAutoConfiguration.class})
+@SpringBootApplication()
 @ComponentScan({"com.dizhongdi"})
 public class ServiceUcenterApplication {
 
