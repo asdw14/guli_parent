@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dizhongdi.serviceucenter.mapper.UcenterMemberMapper">
 
+    <select id="selectRegisterCount" parameterType="String" resultType="int">
+        select count(1) from ucenter_member where DATE(gmt_create) = #{day}
+    </select>
+
 </mapper>

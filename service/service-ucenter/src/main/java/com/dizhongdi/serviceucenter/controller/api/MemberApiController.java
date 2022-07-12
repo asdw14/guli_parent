@@ -59,4 +59,12 @@ public class MemberApiController {
         BeanUtils.copyProperties(ucenterMember,member);
         return member;
     }
+
+//    统计某一天的注册人数
+    @GetMapping(value = "countregister/{day}")
+    public R registerCount(
+            @PathVariable String day){
+        Integer count = memberService.countRegisterByDay(day);
+        return R.ok().data("countRegister", count);
+    }
 }

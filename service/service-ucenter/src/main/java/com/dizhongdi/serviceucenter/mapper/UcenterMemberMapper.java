@@ -15,4 +15,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UcenterMemberMapper extends BaseMapper<UcenterMember> {
 
+    //某一天的注册人数
+    Integer selectRegisterCount(String day);
 }
