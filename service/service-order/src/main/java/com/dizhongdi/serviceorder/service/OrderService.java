@@ -13,4 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface OrderService extends IService<Order> {
 
+    //根据课程id和用户id创建订单，返回订单id
+    String saveOrder(String courseId, String memberIdByJwtToken);
+
 }

@@ -5,13 +5,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dizhongdi.commonutils.R;
+import com.dizhongdi.commonutils.vo.CourseWebVoOrder;
 import com.dizhongdi.serviceedu.entity.EduCourse;
+import com.dizhongdi.serviceedu.entity.front.CourseWebVo;
 import com.dizhongdi.serviceedu.service.EduCourseService;
 import com.dizhongdi.serviceedu.vo.course.CourseInfoVo;
 import com.dizhongdi.serviceedu.vo.course.CoursePublishVo;
 import com.dizhongdi.serviceedu.vo.course.CourseQuery;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,6 +98,16 @@ public class EduCourseController {
             return R.error().message("删除失败,请重试");
         }
     }
+
+    //根据课程id查询课程信息
+    @GetMapping("getDto/{courseId}")
+    public com.dizhongdi.commonutils.vo.CourseWebVoOrder getCourseInfoDto(@PathVariable String courseId) {
+        CourseWebVo courseInfoForm = eduCourseService.selectInfoWebById(courseId);
+        com.dizhongdi.commonutils.vo.CourseWebVoOrder courseInfo = new com.dizhongdi.commonutils.vo.CourseWebVoOrder();
+        BeanUtils.copyProperties(courseInfoForm,courseInfo);
+        return courseInfo;
+    }
+
 
 }
 
