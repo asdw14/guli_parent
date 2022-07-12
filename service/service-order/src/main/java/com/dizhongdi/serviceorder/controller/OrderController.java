@@ -43,6 +43,10 @@ public class OrderController {
         return R.ok().data("item", order);
     }
 
-
+    //查询订单信息
+    @GetMapping("isBuyCourse/{memberid}/{id}")
+    public boolean isBuyCourse(@PathVariable("memberid") String memberid, @PathVariable("id") String id){
+        return orderService.count(new QueryWrapper<Order>().eq("member_id", memberid).eq("status", 1).eq("course_id", id)) > 0 ? true : false;
+    }
 }
 
