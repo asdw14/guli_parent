@@ -62,9 +62,9 @@ public class MemberApiController {
 
 //    统计某一天的注册人数
     @GetMapping(value = "countregister/{day}")
-    public R registerCount(
+    public Integer registerCount(
             @PathVariable String day){
         Integer count = memberService.countRegisterByDay(day);
-        return R.ok().data("countRegister", count);
+        return count;
     }
 }
