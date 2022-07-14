@@ -10,7 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan({"com.dizhongdi"})
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, NacosDiscoveryEndpointAutoConfiguration.class,NacosDiscoveryAutoConfiguration.class, NacosDiscoveryClientAutoConfiguration.class})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
 public class ServiceMsmApplication {
 

@@ -7,7 +7,7 @@ import org.springframework.cloud.alibaba.nacos.NacosDiscoveryAutoConfiguration;
 import org.springframework.cloud.alibaba.nacos.discovery.NacosDiscoveryClientAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class , NacosDiscoveryAutoConfiguration.class, NacosDiscoveryClientAutoConfiguration.class} )
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class} )
 @ComponentScan("com.dizhongdi")
 public class ServiceOssApplication {
 
