@@ -4,11 +4,9 @@ package com.dizhongdi.servicesta.controller;
 import com.dizhongdi.commonutils.R;
 import com.dizhongdi.servicesta.service.StatisticsDailyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
 
 /**
  * <p>
@@ -19,16 +17,23 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-07-12
  */
 @RestController
-@RequestMapping("/servicesta/statistics-daily")
+@RequestMapping("/admin/servicesta")
+@CrossOrigin
 public class StatisticsDailyController {
     @Autowired
     StatisticsDailyService dailyService;
 
     //在统计表中创建某天的统计数据
-    @PostMapping("{day}")
+    @PostMapping("day/{day}")
     public R createStatisticsByDate(@PathVariable String day) {
         dailyService.createStatisticsByDay(day);
         return R.ok();
+    }
+
+    @GetMapping("showChart/{begin}/{end}/{type}")
+    public R showChart(@PathVariable String begin,@PathVariable String end,@PathVariable String type){
+        Map<String, Object> map = dailyService.getChartData(begin, end, type);
+        return R.ok().data(map);
     }
 }
 
